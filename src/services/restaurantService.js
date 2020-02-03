@@ -114,6 +114,19 @@ export function getRestaurant(id) {
   return restaurants.find(restaurant => restaurant._id === id);
 }
 
+export function getCuisines() {
+  let allcuisines = restaurants.map(restaurants => restaurants.cuisine.name);
+
+  let cuisines = ['All'];
+  for (let i=0; i < allcuisines.length; i++){
+    if (!cuisines.includes(allcuisines[i])){
+      cuisines.push(allcuisines[i]);
+    }
+  }
+
+  return cuisines;
+}
+
 export function deleteRestaurant(id) {
   const found = restaurants.find(restaurant => restaurant._id === id);
   restaurants = restaurants.filter(restaurant => restaurant._id !== id);
