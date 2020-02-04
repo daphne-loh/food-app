@@ -3,12 +3,14 @@ import { getRestaurants } from "../../services/restaurantService";
 import { getCuisines, getDefaultCuisine } from "../../services/cuisineService";
 import Restaurant from "../Restaurant/Restaurant";
 import FilterBar from "../FilterBar/FilterBar";
+import SortBySelect from "../SortBySelect/SortBySelect";
 
 class HomePage extends Component {
   state = {
     restaurants: getRestaurants(),
     cuisines: [getDefaultCuisine(), ...getCuisines()],
-    selectedCuisine: null
+    selectedCuisine: null,
+    selectedDropdown: ""
   };
 
   handleCuisineSelect = cuisine => {
@@ -18,12 +20,46 @@ class HomePage extends Component {
     });
   };
 
+   handleChange = async selection => {
+      await this.setState({
+       selectedDropdown:selection.target.value
+     });
+
+  }
+
   render() {
     const { restaurants, cuisines, selectedCuisine } = this.state;
-    const filteredRestaurantList =
+    let filteredRestaurantList =
       selectedCuisine && selectedCuisine._id
         ? restaurants.filter(res => res.cuisine._id === selectedCuisine._id)
         : restaurants;
+
+    if (this.state.selectedDropdown === 'ave-price') {
+        // sort by value
+        filteredRestaurantList.sort(function (a, b) {
+            return a.averagePrice - b.averagePrice;
+        });
+    }
+        else if (this.state.selectedDropdown === 'restaurant-name') {
+        // sort by name
+        filteredRestaurantList.sort(function(a, b) {
+            var nameA = a.name.toUpperCase(); // ignore upper and lowercase
+            var nameB = b.name.toUpperCase(); // ignore upper and lowercase
+            if (nameA < nameB) {
+                return -1;
+            }
+            if (nameA > nameB) {
+                return 1;
+            }
+
+            // names must be equal
+            return 0;
+        });
+
+        }
+
+
+
 
     return (
       <div className="container">
@@ -35,6 +71,7 @@ class HomePage extends Component {
               handleClick={this.handleCuisineSelect}
             />
           </div>
+          <SortBySelect handleChange={this.handleChange}/>
         </div>
 
         <div className="row">

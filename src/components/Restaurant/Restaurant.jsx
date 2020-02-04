@@ -19,6 +19,9 @@ function Restaurant(props) {
           {" "}
           {details.openingTime} - {details.closingTime}
         </p>
+          <p className="card-text">
+              ${details.averagePrice}.00
+        </p>
       </div>
 
       <div className="card-footer text-muted">
