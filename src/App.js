@@ -6,6 +6,7 @@ import OrderPage from "./components/OrderPage/OrderPage";
 import AdminPage from "./components/AdminPage/AdminPage";
 
 class App extends Component {
+
   render() {
     return (
       <BrowserRouter>
